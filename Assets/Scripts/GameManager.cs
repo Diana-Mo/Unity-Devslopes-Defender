@@ -43,7 +43,6 @@ public class GameManager : Singleton<GameManager>
                     //break;
             }
         }
-
             yield return new WaitForSeconds(spawnDelay);
             StartCoroutine(Spawn());
     }

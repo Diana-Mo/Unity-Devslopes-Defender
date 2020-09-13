@@ -11,6 +11,8 @@ public class TowerManager : Singleton<TowerManager>
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        //require SpriteRenderer for game to work
+        //look at previous game for example
     }
 
     // Update is called once per frame

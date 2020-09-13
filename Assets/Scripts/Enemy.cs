@@ -4,7 +4,7 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField]
     private Transform exitPoint;
-    [SerializeField]
+    //[SerializeField]
     private GameObject[] waypoints;
     [SerializeField]
     private float navigationUpdate;
