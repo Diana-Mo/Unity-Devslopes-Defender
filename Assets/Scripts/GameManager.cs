@@ -2,48 +2,50 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager> 
 {
-    public static GameManager instance = null;
-    public GameObject spawnPoint;
-    public GameObject [] enemies;
-    public int maxEnemiesOnScreen;
-    public int totalEnemies;
-    public int enemiesPerSpawn;
+    //public static GameManager instance = null;
+    [SerializeField]
+    private GameObject spawnPoint;
+    [SerializeField]
+    private GameObject [] enemies;
+    [SerializeField]
+    private int maxEnemiesOnScreen;
+    [SerializeField]
+    private int totalEnemies;
+    [SerializeField]
+    private int enemiesPerSpawn;
 
     private int enemiesOnScreen = 0;
+    const float spawnDelay = 0.5f;
 
-    private void Awake()
-    {
-        if (instance == null)
-            instance = this;
-        else if (instance != this)
-            Destroy(gameObject);
-
-        DontDestroyOnLoad(gameObject);
-    }
 
     // Start is called before the first frame update
     void Start()
     {
-        SpawnEnemy();
+        StartCoroutine(Spawn());
 
     }
 
-    void SpawnEnemy()
+    IEnumerator Spawn()
     {
-        if (enemiesPerSpawn <= 0 || enemiesOnScreen >= totalEnemies)
-            return;
-
-        for(int i = 0; i < enemiesPerSpawn; i++)
+        if (enemiesPerSpawn > 0 && enemiesOnScreen < totalEnemies)
         {
-            if (enemiesOnScreen >= maxEnemiesOnScreen)
-                break;
-
-            GameObject newEnemy = Instantiate(enemies[0]);
-            newEnemy.transform.position = spawnPoint.transform.position;
-            enemiesOnScreen += 1;
+            for (int i = 0; i < enemiesPerSpawn; i++)
+            {
+                if (enemiesOnScreen >= maxEnemiesOnScreen)
+                    break;
+                
+                GameObject newEnemy = Instantiate(enemies[0]);
+                newEnemy.transform.position = spawnPoint.transform.position;
+                enemiesOnScreen += 1;
+                
+                    //break;
+            }
         }
+
+            yield return new WaitForSeconds(spawnDelay);
+            StartCoroutine(Spawn());
     }
 
     public void RemoveEnemyFromScreen()
