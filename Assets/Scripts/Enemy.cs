@@ -19,6 +19,8 @@ public class Enemy : MonoBehaviour
         target = 0;
         enemy = GetComponent<Transform>();
         waypoints = GameObject.FindGameObjectsWithTag("checkPoint");
+
+        GameManager.Instance.RegisterEnemy(this);
     }
 
     // Update is called once per frame
@@ -48,8 +50,7 @@ public class Enemy : MonoBehaviour
             target += 1;
         else if (other.tag == "Finish")
         {
-            GameManager.Instance.RemoveEnemyFromScreen();
-            Destroy(gameObject);
+            GameManager.Instance.UnregisterEnemy(this);
         }
     }
 }
