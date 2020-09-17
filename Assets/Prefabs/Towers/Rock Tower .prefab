@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6004540954057862895}
   - component: {fileID: 8149410543653728093}
+  - component: {fileID: -9212192289190311106}
   m_Layer: 8
   m_Name: 'Rock Tower '
   m_TagString: tower
@@ -81,3 +82,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-9212192289190311106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3228533001560211343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14235a9cb54854976903fe5d67927342, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeBetweenAttacks: 1
+  attackRadius: 2
+  projectile: {fileID: 8916578561852588763, guid: 68ac7269943ca4fffbad5881ffca580d,
+    type: 3}

@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5073333325035719127}
   - component: {fileID: 3445699687898119345}
+  - component: {fileID: 3685199656058036593}
   m_Layer: 8
-  m_Name: 'Castle Tower '
+  m_Name: Castle Tower
   m_TagString: tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -81,3 +82,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3685199656058036593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5403630891835795001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14235a9cb54854976903fe5d67927342, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeBetweenAttacks: 1
+  attackRadius: 3
+  projectile: {fileID: -2740006961037672932, guid: a92a0988250644218904b9d029af4364,
+    type: 3}
