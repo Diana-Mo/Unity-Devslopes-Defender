@@ -163,8 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 018d5177646a8416aab89598bf422b35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: 0
   exitPoint: {fileID: 6697974722273949018, guid: 91db13968b0fa4283895a66acd28c6fa,
     type: 3}
-  waypoints: []
   navigationUpdate: 0.01
+  healthPoints: 200
