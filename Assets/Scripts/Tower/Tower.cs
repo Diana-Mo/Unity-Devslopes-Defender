@@ -46,9 +46,7 @@ public class Tower : MonoBehaviour
             }
 
             if (Vector2.Distance(transform.localPosition, targetEnemy.transform.localPosition) > attackRadius)
-            {
                 targetEnemy = null;
-            }
         }
     }
 
@@ -73,11 +71,10 @@ public class Tower : MonoBehaviour
             StartCoroutine(MoveProjectile(newProjectile));
         }
     }
-
     IEnumerator MoveProjectile(Projectile projectile)
     {
         //loop until projectile hit the enemy
-        while (getTargetDistance(targetEnemy) > 0.20f && projectile != null && targetEnemy != null);
+        while (getTargetDistance(targetEnemy) > 0.20f && projectile != null && targetEnemy != null)
         {
             var dir = targetEnemy.transform.localPosition - transform.localPosition;
             var angleDirection = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
@@ -86,9 +83,7 @@ public class Tower : MonoBehaviour
             yield return null;
         }
         if (projectile != null || targetEnemy == null)
-        {
             Destroy(projectile);
-        }
     }
 
     private float getTargetDistance(Enemy thisEnemy)
@@ -97,11 +92,8 @@ public class Tower : MonoBehaviour
         {
             thisEnemy = GetNearestEnemyInRange();
             if (thisEnemy == null)
-            {
                 return 0f;
-            }
         }
-
         return Mathf.Abs(Vector2.Distance(transform.localPosition, thisEnemy.transform.localPosition));
     }
 
@@ -111,9 +103,7 @@ public class Tower : MonoBehaviour
         foreach(Enemy enemy in GameManager.Instance.EnemyList)
         {
             if (Vector2.Distance(transform.localPosition, enemy.transform.localPosition) <= attackRadius)
-            {
                 enemiesInRange.Add(enemy);
-            }
         }
         return enemiesInRange;
     }
@@ -131,6 +121,5 @@ public class Tower : MonoBehaviour
             }
         }
         return nearestEnemy;
-
     } 
 }
