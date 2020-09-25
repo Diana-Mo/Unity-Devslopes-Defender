@@ -53,17 +53,21 @@ public class Tower : MonoBehaviour
     private void FixedUpdate()
     {
         if (isAttacking)
+        {
+            attackCounter = timeBetweenAttacks;
             Attack();
+        }
     }
 
     public void Attack()
     {
         isAttacking = false;
-        Projectile newProjectile = Instantiate(projectile) as Projectile;
+        Projectile newProjectile = Instantiate(projectile);
         newProjectile.transform.localPosition = transform.localPosition;
         if (targetEnemy == null)
         {
             Destroy(newProjectile);
+            //Destroy(projectile.gameObject, 3f);
         }
         else
         {
@@ -74,7 +78,7 @@ public class Tower : MonoBehaviour
     IEnumerator MoveProjectile(Projectile projectile)
     {
         //loop until projectile hit the enemy
-        while (getTargetDistance(targetEnemy) > 0.20f && projectile != null && targetEnemy != null)
+        while (getTargetDistance(targetEnemy) > 0.20f && projectile != null && targetEnemy != null && !targetEnemy.IsDead && (getTargetDistance(targetEnemy) < attackRadius))
         {
             var dir = targetEnemy.transform.localPosition - transform.localPosition;
             var angleDirection = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
