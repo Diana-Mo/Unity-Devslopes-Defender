@@ -1,10 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
+public enum gameStatus
+{
+    next, play, gameover, win
+}
 
 public class GameManager : Singleton<GameManager> 
 {
     //public static GameManager instance = null;
+    [SerializeField]
+    private int totalWaves = 10;
+    [SerializeField]
+    private Text totalMoneyLbl;
+    [SerializeField]
+    private Text currentWaveLbl;
+    [SerializeField]
+    private Text totalEscapedLbl;
     [SerializeField]
     private GameObject spawnPoint;
     [SerializeField]
@@ -15,17 +29,47 @@ public class GameManager : Singleton<GameManager>
     private int totalEnemies;
     [SerializeField]
     private int enemiesPerSpawn;
+    [SerializeField]
+    private Text playBtnLbl;
+    [SerializeField]
+    private Button playBtn;
+
+    private int waveNumber = 0;
+    private int totalMoney = 10;
+    private int totalEscaped = 0;
+    private int roundEscaped = 0;
+    private int totalKilled = 0;
+    private int whichEnemiesToSpawn = 0;
+    private gameStatus currentState = gameStatus.play;
 
     public List<Enemy> EnemyList = new List<Enemy>();
 
     const float spawnDelay = 0.5f;
 
+    public int TptalMoney
+    {
+        get
+        {
+            return totalMoney;
+        }
+        set
+        {
+            totalMoney = value;
+            totalMoneyLbl.text = totalMoney.ToString();
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(Spawn());
+        playBtn.gameObject.SetActive(false);
+        showMenu();
 
+    }
+
+    void Update()
+    {
+        handleEscape();
     }
 
     IEnumerator Spawn()
@@ -65,5 +109,46 @@ public class GameManager : Singleton<GameManager>
         }
 
         EnemyList.Clear();
+    }
+
+    public void addMoney(int amount)
+    {
+        totalMoney += amount;
+    }
+
+    public void subtractMoney(int amount)
+    {
+        totalMoney -= amount;
+    }
+
+    public void showMenu()
+    {
+        switch (currentState)
+        {
+            case gameStatus.gameover:
+                playBtnLbl.text = "Play Again";
+                // add gameover sounds
+                break;
+            case gameStatus.next:
+                playBtnLbl.text = "Next Wave";
+                break;
+            case gameStatus.play:
+                playBtnLbl.text = "Play";
+                break;
+            case gameStatus.win:
+                playBtnLbl.text = "Play";
+                break;
+        }
+
+        playBtn.gameObject.SetActive(true);
+    }
+
+    private void handleEscape()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            TowerManager.Instance.disableDragSprite();
+            TowerManager.Instance.towerBtnPressed = null;
+        }
     }
 }

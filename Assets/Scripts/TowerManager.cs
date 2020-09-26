@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class TowerManager : Singleton<TowerManager> 
+public class TowerManager : Singleton<TowerManager>
 {
 
-    private TowerBtn towerBtnPressed;
+    public TowerBtn towerBtnPressed{get; set;}
     private SpriteRenderer spriteRenderer;
 
     // Start is called before the first frame update

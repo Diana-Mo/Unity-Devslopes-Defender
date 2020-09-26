@@ -167,3 +167,4 @@ MonoBehaviour:
     type: 3}
   navigationUpdate: 0.01
   healthPoints: 200
+  rewardAmt: 2
