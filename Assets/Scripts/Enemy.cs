@@ -32,6 +32,7 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         //target = 0;
+        //GetComponent allows to address the properties of other  (Les. 38, 5:50)
         enemy = GetComponent<Transform>();
         enemyCollider = GetComponent<Collider2D>();
         waypoints = GameObject.FindGameObjectsWithTag("checkPoint");
@@ -45,14 +46,15 @@ public class Enemy : MonoBehaviour
     {
         if (waypoints != null && !isDead)
         {
-            navigationTime += Time.deltaTime;
-            if (navigationTime > navigationUpdate)
+            navigationTime += Time.deltaTime; //keep track on navigationTime since created
+            if (navigationTime > navigationUpdate) //not calling things more often than needed
             {
-                if (target < waypoints.Length)
+                if (target < waypoints.Length) //not stepping outside of the wayPoints array
+                    //move enemies' position
                     enemy.position = Vector2.MoveTowards(enemy.position, waypoints[target].transform.position, navigationTime);
                 else
                 {
-                    enemy.position = Vector2.MoveTowards(enemy.position, exitPoint.position, navigationTime);
+                    enemy.position = Vector2.MoveTowards(enemy.position, exitPoint.transform.position, navigationTime);
                 }
                 navigationTime = 0;
             }
@@ -65,7 +67,10 @@ public class Enemy : MonoBehaviour
             target += 1;
         else if (other.tag == "Finish")
         {
+            GameManager.Instance.RoundEscaped += 1;
+            GameManager.Instance.TotalEscaped += 1;
             GameManager.Instance.UnregisterEnemy(this);
+            GameManager.Instance.isWaveOver(); // check status of the game
         }
         else if (other.tag == "projectile")
         {
@@ -93,5 +98,8 @@ public class Enemy : MonoBehaviour
     {
         isDead = true;
         enemyCollider.enabled = false;
+        GameManager.Instance.TotalKilled += 1;
+        GameManager.Instance.addMoney(rewardAmt);
+        GameManager.Instance.isWaveOver();
     }
 }
