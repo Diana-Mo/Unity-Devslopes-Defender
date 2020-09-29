@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
+[RequireComponent(typeof(SpriteRenderer))]
+
 public class TowerManager : Singleton<TowerManager>
 {
 

@@ -1,5 +1,10 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(Transform))]
+[RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(Projectile))]
+
 public class Enemy : MonoBehaviour
 {
     [SerializeField]

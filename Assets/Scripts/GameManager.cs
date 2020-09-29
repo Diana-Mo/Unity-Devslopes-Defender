@@ -83,7 +83,7 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    public int TptalMoney
+    public int TotalMoney
     {
         get
         {
@@ -150,12 +150,12 @@ public class GameManager : Singleton<GameManager>
 
     public void addMoney(int amount)
     {
-        totalMoney += amount;
+        TotalMoney += amount;
     }
 
     public void subtractMoney(int amount)
     {
-        totalMoney -= amount;
+        TotalMoney -= amount;
     }
 
     public void isWaveOver()
@@ -224,8 +224,8 @@ public class GameManager : Singleton<GameManager>
             default:
                 totalEnemies = 3;
                 TotalEscaped = 0;
-                totalMoney = 10;
-                totalMoneyLbl.text = totalMoney.ToString();
+                TotalMoney = 10;
+                totalMoneyLbl.text = TotalMoney.ToString();
                 totalEscapedLbl.text = "Escaped " + TotalEscaped + "/10";
                 //reset towers
                 break;
