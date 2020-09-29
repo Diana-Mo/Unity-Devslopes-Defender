@@ -118,8 +118,8 @@ public class GameManager : Singleton<GameManager>
                 if (EnemyList.Count >= maxEnemiesOnScreen)
                     break;
                 
-                GameObject newEnemy = Instantiate(enemies[1]);
-                newEnemy.transform.position = spawnPoint.transform.position;
+                GameObject newEnemy = Instantiate(enemies[1]); //create enemies
+                newEnemy.transform.position = spawnPoint.transform.position; //created enemies spawn at the spawnPoint
                     //break;
             }
         }

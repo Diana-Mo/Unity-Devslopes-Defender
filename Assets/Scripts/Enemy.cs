@@ -54,6 +54,7 @@ public class Enemy : MonoBehaviour
                     enemy.position = Vector2.MoveTowards(enemy.position, waypoints[target].transform.position, navigationTime);
                 else
                 {
+                    //moveTowards exit point
                     enemy.position = Vector2.MoveTowards(enemy.position, exitPoint.transform.position, navigationTime);
                 }
                 navigationTime = 0;
@@ -61,11 +62,11 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D other) //if we hit something, this will be triggered
     {
-        if (other.tag == "checkPoint")
-            target += 1;
-        else if (other.tag == "Finish")
+        if (other.tag == "checkPoint") //other is the collider 
+            target += 1; //new path is aimed at next checkpoint 
+        else if (other.tag == "Finish") 
         {
             GameManager.Instance.RoundEscaped += 1;
             GameManager.Instance.TotalEscaped += 1;
