@@ -13,6 +13,8 @@ public class Projectile : MonoBehaviour
     [SerializeField]
     private proType projectileType;
 
+    public bool isCollided = false;
+
     public int AttackStrength
     {
         get

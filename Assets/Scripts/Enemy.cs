@@ -3,8 +3,6 @@
 [RequireComponent(typeof(Transform))]
 [RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(Projectile))]
-
 public class Enemy : MonoBehaviour
 {
     [SerializeField]
@@ -80,17 +78,23 @@ public class Enemy : MonoBehaviour
         }
         else if (other.tag == "projectile")
         {
-            Projectile newP = other.gameObject.GetComponent<Projectile>();
-            enemyHit(newP.AttackStrength);
-            Destroy(other.gameObject);
+            Projectile p = other.gameObject.GetComponent<Projectile>();
+            if (!p.isCollided)
+            {
+                enemyHit(p.AttackStrength);
+                p.isCollided = true;
+            }
+
+            //Destroy(other.gameObject);
         }
     }
 
     public void enemyHit(int hitpoints)
     {
-        if (healthPoints - hitpoints > 0)
+        healthPoints -= hitpoints;
+
+        if (healthPoints > 0)
         {
-            healthPoints -= hitpoints;
             anim.Play("Hurt");
         }
         else

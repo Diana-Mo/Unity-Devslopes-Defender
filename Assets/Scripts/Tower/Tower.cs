@@ -11,13 +11,14 @@ public class Tower : MonoBehaviour
     [SerializeField]
     private Projectile projectile;
     private Enemy targetEnemy = null;
-    private float attackCounter;
-    private bool isAttacking = false;
+    private float attackCounter = 0;
+    private bool isAttacking = true;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        attackCounter = 0;
+        isAttacking = true;
     }
 
     // Update is called once per frame
@@ -31,22 +32,15 @@ public class Tower : MonoBehaviour
                 targetEnemy = nearestEnemy;
             }
         }
-
         else
         {
-            if (attackCounter <= 0)
-            {
-                isAttacking = true;
-                //reset attack counter
-                attackCounter = timeBetweenAttacks;
-            }
-            else
-            {
-                isAttacking = false;
-            }
-
             if (Vector2.Distance(transform.localPosition, targetEnemy.transform.localPosition) > attackRadius)
                 targetEnemy = null;
+        }
+
+        if (attackCounter <= 0)
+        {
+            isAttacking = true;
         }
     }
 
@@ -54,40 +48,45 @@ public class Tower : MonoBehaviour
     {
         if (isAttacking)
         {
-            attackCounter = timeBetweenAttacks;
             Attack();
         }
     }
 
     public void Attack()
     {
-        isAttacking = false;
-        Projectile newProjectile = Instantiate(projectile);
-        newProjectile.transform.localPosition = transform.localPosition;
         if (targetEnemy == null)
         {
-            Destroy(newProjectile);
-            //Destroy(projectile.gameObject, 3f);
+            return;
         }
-        else
-        {
-            //move projectile to enemy
-            StartCoroutine(MoveProjectile(newProjectile));
-        }
+
+        attackCounter = timeBetweenAttacks;
+        isAttacking = false;
+
+        Projectile newProjectile = Instantiate(projectile);
+        newProjectile.transform.localPosition = transform.localPosition;
+
+        //move projectile to enemy
+        StartCoroutine(MoveProjectile(newProjectile));
     }
-    IEnumerator MoveProjectile(Projectile projectile)
+    IEnumerator MoveProjectile(Projectile p)
     {
         //loop until projectile hit the enemy
-        while (getTargetDistance(targetEnemy) > 0.20f && projectile != null && targetEnemy != null && !targetEnemy.IsDead && (getTargetDistance(targetEnemy) < attackRadius))
+        while (getTargetDistance(targetEnemy) > 0.20f && targetEnemy != null && !targetEnemy.IsDead && (getTargetDistance(targetEnemy) < attackRadius))
         {
+            if (p.isCollided)
+            {
+                break;
+            }
+
             var dir = targetEnemy.transform.localPosition - transform.localPosition;
             var angleDirection = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-            projectile.transform.rotation = Quaternion.AngleAxis(angleDirection, Vector3.forward);
-            projectile.transform.localPosition = Vector2.MoveTowards(projectile.transform.localPosition, targetEnemy.transform.localPosition, 5f * Time.deltaTime);
+            p.transform.rotation = Quaternion.AngleAxis(angleDirection, Vector3.forward);
+            p.transform.localPosition = Vector2.MoveTowards(p.transform.localPosition, targetEnemy.transform.localPosition, 5f * Time.deltaTime);
             yield return null;
         }
-        if (projectile != null || targetEnemy == null)
-            Destroy(projectile);
+
+        targetEnemy = null;
+        Destroy(p.gameObject);
     }
 
     private float getTargetDistance(Enemy thisEnemy)
