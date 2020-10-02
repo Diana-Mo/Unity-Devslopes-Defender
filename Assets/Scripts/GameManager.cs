@@ -45,7 +45,8 @@ public class GameManager : Singleton<GameManager>
     public List<Enemy> EnemyList = new List<Enemy>();
 
 
-    const float spawnDelay = 0.5f;
+
+    const float spawnDelay = 1.0f;
 
     public int TotalEscaped
     {
@@ -107,11 +108,16 @@ public class GameManager : Singleton<GameManager>
     void Update()
     {
         handleEscape();
+        if (readyToSpawn && !playBtn.gameObject.activeInHierarchy)
+        {
+            StartCoroutine(Spawn());
+        }
     }
 
     IEnumerator Spawn()
     {
-        if (enemiesPerSpawn > 0 && EnemyList.Count < totalEnemies)
+        readyToSpawn = false;
+        while (enemiesPerSpawn > 0 && EnemyList.Count < totalEnemies)
         {
             for (int i = 0; i < enemiesPerSpawn; i++)
             {
@@ -120,11 +126,14 @@ public class GameManager : Singleton<GameManager>
                 
                 GameObject newEnemy = Instantiate(enemies[0]); //create enemies
                 newEnemy.transform.position = spawnPoint.transform.position; //created enemies spawn at the spawnPoint
-                    //break;
+                                                                             //break;
+                yield return new WaitForSeconds(spawnDelay/3);
             }
-        }
             yield return new WaitForSeconds(spawnDelay);
-            StartCoroutine(Spawn());
+        }
+        readyToSpawn = true;
+        //yield return new WaitForSeconds(spawnDelay);
+        //StartCoroutine(Spawn());
     }
 
     public void RegisterEnemy(Enemy enemy)
@@ -215,14 +224,21 @@ public class GameManager : Singleton<GameManager>
 
     public void playBtnPressed ()
     {
+        //StopAllCoroutines();
         //Debug.Log("you pressed it <3");
         switch(currentState)
         {
             case gameStatus.next:
                 waveNumber += 1;
                 totalEnemies += waveNumber;
+                enemiesPerSpawn = 1 + waveNumber / 2;
+                //StartCoroutine(Spawn());
                 break;
             default:
+                //maxEnemiesOnScreen
+                //totalEnemies
+                //max enemies on Screen is 10 + total enemies
+                //total enemies is += wave Number
                 totalEnemies = 3;
                 TotalEscaped = 0;
                 TotalMoney = 10;
@@ -230,6 +246,7 @@ public class GameManager : Singleton<GameManager>
                 totalMoneyLbl.text = totalMoney.ToString();
                 totalMoneyLbl.text = TotalMoney.ToString();
                 totalEscapedLbl.text = "Escaped " + TotalEscaped + "/10";
+                //StartCoroutine(Spawn());
                 //reset towers
                 break;
         }
@@ -237,7 +254,6 @@ public class GameManager : Singleton<GameManager>
         TotalKilled = 0;
         RoundEscaped = 0;
         currentWaveLbl.text = "Wave " + (waveNumber + 1);
-        StartCoroutine(Spawn());
         playBtn.gameObject.SetActive(false);
     }
 

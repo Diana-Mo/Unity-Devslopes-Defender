@@ -115,14 +115,28 @@ public class Tower : MonoBehaviour
     {
         Enemy nearestEnemy = null;
         float smallestDistance = float.PositiveInfinity;
-        foreach(Enemy enemy in GetEnemiesInRange())
+
+        foreach (Enemy enemy in GameManager.Instance.EnemyList)
         {
-             if (Vector2.Distance(transform.localPosition, enemy.transform.localPosition) < smallestDistance)
+            var distance = Vector2.Distance(transform.localPosition, enemy.transform.localPosition);
+            if (distance > attackRadius || distance >= smallestDistance)
             {
-                smallestDistance = Vector2.Distance(transform.localPosition, enemy.transform.localPosition);
-                nearestEnemy = enemy;
+                continue;
             }
+
+            smallestDistance = Vector2.Distance(transform.localPosition, enemy.transform.localPosition);
+            nearestEnemy = enemy;
         }
+
+
+        //foreach (Enemy enemy in GetEnemiesInRange())
+        //{
+        //     if (Vector2.Distance(transform.localPosition, enemy.transform.localPosition) < smallestDistance)
+        //    {
+        //        smallestDistance = Vector2.Distance(transform.localPosition, enemy.transform.localPosition);
+        //        nearestEnemy = enemy;
+        //    }
+        //}
         return nearestEnemy;
     } 
 }
