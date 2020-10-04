@@ -90,6 +90,7 @@ public class TowerManager : Singleton<TowerManager>
             newTower.transform.position = hit.transform.position;
             hit.collider.tag = "buildSiteFull";
             buyTower(towerBtnPressed.TowerPrice);
+            GameManager.Instance.AudioSource.PlayOneShot(SoundManager.Instance.TowerBuilt);
             RegisterTower(newTower);
             disableDragSprite();
         }

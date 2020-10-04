@@ -64,6 +64,25 @@ public class Tower : MonoBehaviour
 
         Projectile newProjectile = Instantiate(projectile);
         newProjectile.transform.localPosition = transform.localPosition;
+        if (newProjectile.ProjectileType == proType.arrow)
+        {
+            GameManager.Instance.AudioSource.PlayOneShot(SoundManager.Instance.Arrow);
+        }
+        else if (newProjectile.ProjectileType == proType.fireball)
+        {
+            GameManager.Instance.AudioSource.PlayOneShot(SoundManager.Instance.Fireball);
+        }
+        else if (newProjectile.ProjectileType == proType.rock)
+        {
+            GameManager.Instance.AudioSource.PlayOneShot(SoundManager.Instance.Rock);
+        }
+
+        switch (newProjectile.ProjectileType)
+        {
+            case proType.arrow:
+                GameManager.Instance.AudioSource.PlayOneShot(SoundManager.Instance.Arrow);
+                break;
+        }
 
         //move projectile to enemy
         StartCoroutine(MoveProjectile(newProjectile));
@@ -100,16 +119,16 @@ public class Tower : MonoBehaviour
         return Mathf.Abs(Vector2.Distance(transform.localPosition, thisEnemy.transform.localPosition));
     }
 
-    private List<Enemy> GetEnemiesInRange()
-    {
-        List<Enemy> enemiesInRange = new List<Enemy>();
-        foreach(Enemy enemy in GameManager.Instance.EnemyList)
-        {
-            if (Vector2.Distance(transform.localPosition, enemy.transform.localPosition) <= attackRadius)
-                enemiesInRange.Add(enemy);
-        }
-        return enemiesInRange;
-    }
+    //private List<Enemy> GetEnemiesInRange()
+    //{
+    //    List<Enemy> enemiesInRange = new List<Enemy>();
+    //    foreach(Enemy enemy in GameManager.Instance.EnemyList)
+    //    {
+    //        if (Vector2.Distance(transform.localPosition, enemy.transform.localPosition) <= attackRadius)
+    //            enemiesInRange.Add(enemy);
+    //    }
+    //    return enemiesInRange;
+    //}
 
     private Enemy GetNearestEnemyInRange()
     {
@@ -127,7 +146,7 @@ public class Tower : MonoBehaviour
             smallestDistance = Vector2.Distance(transform.localPosition, enemy.transform.localPosition);
             nearestEnemy = enemy;
         }
-
+        return nearestEnemy;
 
         //foreach (Enemy enemy in GetEnemiesInRange())
         //{
@@ -137,6 +156,6 @@ public class Tower : MonoBehaviour
         //        nearestEnemy = enemy;
         //    }
         //}
-        return nearestEnemy;
+        //return nearestEnemy;
     } 
 }

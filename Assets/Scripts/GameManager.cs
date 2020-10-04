@@ -24,7 +24,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField]
     private GameObject[] enemies;
     //[SerializeField]
-    //private int maxEnemiesOnScreen;
+    private int maxEnemiesOnScreen;
     [SerializeField]
     private int totalEnemies = 3;
     [SerializeField]
@@ -33,6 +33,7 @@ public class GameManager : Singleton<GameManager>
     private Text playBtnLbl;
     [SerializeField]
     private Button playBtn;
+    
 
     private int waveNumber = 0;
     private int totalMoney = 10;
@@ -40,10 +41,13 @@ public class GameManager : Singleton<GameManager>
     private int roundEscaped = 0;
     private int totalKilled = 0;
     private int whichEnemiesToSpawn = 0;
+    private int enemiesToSpawn = 0;
     private gameStatus currentState = gameStatus.play;
+    private AudioSource audioSource;
 
     public List<Enemy> EnemyList = new List<Enemy>();
 
+    private bool readyToSpawn = true;
 
 
     const float spawnDelay = 1.0f;
@@ -97,10 +101,19 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    public AudioSource AudioSource
+    {
+        get
+        {
+            return audioSource;
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         playBtn.gameObject.SetActive(false);
+        audioSource = GetComponent<AudioSource>();
         showMenu();
 
     }
@@ -123,8 +136,9 @@ public class GameManager : Singleton<GameManager>
             {
                 if (EnemyList.Count >= totalEnemies)
                     break;
-                
-                GameObject newEnemy = Instantiate(enemies[0]); //create enemies
+
+                //GameObject newEnemy = Instantiate(enemies[0]); //create enemies
+                Enemy newEnemy = Instantiate(enemies[Random.Range(0, enemiesToSpawn)]);
                 newEnemy.transform.position = spawnPoint.transform.position; //created enemies spawn at the spawnPoint
                                                                              //break;
                 yield return new WaitForSeconds(spawnDelay/3);
@@ -173,6 +187,10 @@ public class GameManager : Singleton<GameManager>
         totalEscapedLbl.text = "Escaped " + TotalEscaped + "/10";
         if ((RoundEscaped + TotalKilled) == totalEnemies)
         {
+            if (waveNumber <= enemies.Length)
+            {
+                enemiesToSpawn = waveNumber;
+            }
             setCurrentGameState();
             showMenu();
         }
@@ -206,7 +224,7 @@ public class GameManager : Singleton<GameManager>
         {
             case gameStatus.gameover:
                 playBtnLbl.text = "Play Again";
-                // add gameover sounds
+                AudioSource.PlayOneShot(SoundManager.Instance.GameOver); 
                 break;
             case gameStatus.next:
                 playBtnLbl.text = "Next Wave";
@@ -242,10 +260,13 @@ public class GameManager : Singleton<GameManager>
                 totalEnemies = 3;
                 TotalEscaped = 0;
                 TotalMoney = 10;
+                enemiesToSpawn = 0;
                 TowerManager.Instance.DestroyAllTower();
+                TowerManager.Instance.RenameTagsBuildSites();
                 totalMoneyLbl.text = totalMoney.ToString();
                 totalMoneyLbl.text = TotalMoney.ToString();
                 totalEscapedLbl.text = "Escaped " + TotalEscaped + "/10";
+                audioSource.PlayOneShot(SoundManager.Instance.NewGame);
                 //StartCoroutine(Spawn());
                 //reset towers
                 break;
