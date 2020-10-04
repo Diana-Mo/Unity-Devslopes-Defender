@@ -22,7 +22,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField]
     private GameObject spawnPoint;
     [SerializeField]
-    private GameObject[] enemies;
+    private Enemy[] enemies;
     //[SerializeField]
     private int maxEnemiesOnScreen;
     [SerializeField]
